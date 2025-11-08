@@ -8,10 +8,28 @@ import db
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
-#Etusivu
+#Home page
 @app.route("/")
 def index():
     return render_template("index.html")
+
+#Add new dataset
+@app.route("/new_dataset")
+def new_dataset():
+    return render_template("new_dataset.html")
+
+#Add dataset to database
+@app.route("/create_dataset", methods=["POST"])
+def create_dataset():
+    title = request.form["title"]
+    description = request.form["description"]
+    year = request.form["year"]
+    user_id = session["user_id"]
+
+    sql = "INSERT INTO datasets (title, description, year, user_id) VALUES (?, ?, ?, ?)"
+    db.execute(sql, [title, description, year, user_id])
+    
+    return redirect("/")
 
 #Create account
 @app.route("/register")
@@ -44,10 +62,13 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         
-        sql = "SELECT password_hash FROM users WHERE username = ?"
-        password_hash = db.query(sql, [username])[0][0]
+        sql = "SELECT id, password_hash FROM users WHERE username = ?"
+        result = db.query(sql, [username])[0]
+        user_id = result["id"]
+        password_hash = result["password_hash"]
 
         if check_password_hash(password_hash, password):
+            session["user_id"] = user_id
             session["username"] = username
             return redirect("/")
         else:
@@ -56,6 +77,7 @@ def login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["user_id"]
     return redirect("/")
 
 if __name__ == "__main__":

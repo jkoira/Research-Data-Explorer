@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>New dataset</title>
+</head>
+
+<body>
+  <h1>Add new dataset</h1>
+  <form action="/create_dataset" method="post">
+    <p>
+      Dataset title: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+        Description: <br />
+        <textarea name="description" rows="8" cols="60"></textarea>
+    </p>
+    <p>
+        Collected (year): <br />
+        <input type="text" name="year" />
+    </p>
+   
+    <input type="submit" value="Add dataset" />
+  </form>
+</body>
+
+</html>

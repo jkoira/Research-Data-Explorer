@@ -3,7 +3,7 @@ CREATE TABLE data_formats (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL);
 CREATE TABLE scientific_fields (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL);
 CREATE TABLE datasets(
   id INT,
-  name TEXT,
+  title TEXT,
   description TEXT,
   data_formats_id INT,
   collection_method_id INT,
