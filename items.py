@@ -18,8 +18,17 @@ def get_item(item_id):
                     datasets.title, 
                     datasets.description,
                     datasets.year,
-                    users.username
+                    users.username,
+                    users.id user_id
             FROM datasets, users
             WHERE datasets.user_id = users.id AND
                 datasets.id = ?"""
     return db.query(sql, [item_id])[0]
+
+#Update dataset information in database
+def update_item(item_id, title, description, year):
+    sql = """UPDATE datasets SET title = ?,
+                                 description = ?,
+                                 year = ?
+                             WHERE id = ?"""
+    db.execute(sql, [title, description, year, item_id])

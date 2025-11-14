@@ -27,6 +27,7 @@ def show_item(item_id):
 def new_dataset():
     return render_template("new_dataset.html")
 
+
 #Add dataset to database
 @app.route("/create_dataset", methods=["POST"])
 def create_dataset():
@@ -38,6 +39,24 @@ def create_dataset():
     items.add_item(title, description, year, user_id)
     
     return redirect("/")
+
+#Edit dataset
+@app.route("/edit_dataset/<int:item_id>")
+def edit_dataset(item_id):
+    item = items.get_item(item_id)
+    return render_template("edit_dataset.html", item=item)
+
+#Add edited dataset to database
+@app.route("/update_dataset", methods=["POST"])
+def update_dataset():
+    item_id = request.form["item_id"]
+    title = request.form["title"]
+    description = request.form["description"]
+    year = request.form["year"]
+
+    items.update_item(item_id, title, description, year)
+    
+    return redirect("/item/" + str(item_id))
 
 #Create account
 @app.route("/register")
