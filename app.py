@@ -12,8 +12,15 @@ app.secret_key = config.secret_key
 #Home page
 @app.route("/")
 def index():
+    all_datasets = items.get_items()
+    return render_template("index.html", items=all_datasets)
 
-    return render_template("index.html")
+#Show dataset description page
+@app.route("/item/<int:item_id>")
+def show_item(item_id):
+    item = items.get_item(item_id)
+    return render_template("show_item.html", item=item)
+    
 
 #Add new dataset
 @app.route("/new_dataset")
