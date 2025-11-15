@@ -23,7 +23,8 @@ def get_item(item_id):
             FROM datasets, users
             WHERE datasets.user_id = users.id AND
                 datasets.id = ?"""
-    return db.query(sql, [item_id])[0]
+    result = db.query(sql, [item_id]) 
+    return result[0] if result else None
 
 #Update dataset information in database
 def update_item(item_id, title, description, year):

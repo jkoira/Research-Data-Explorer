@@ -30,6 +30,8 @@ def find_dataset():
 @app.route("/item/<int:item_id>")
 def show_item(item_id):
     item = items.get_item(item_id)
+    if not item:
+        abort(404)
     return render_template("show_item.html", item=item)
     
 
@@ -55,6 +57,8 @@ def create_dataset():
 @app.route("/edit_dataset/<int:item_id>")
 def edit_dataset(item_id):
     item = items.get_item(item_id)
+    if not item:
+        abort(404)   
     if item["user_id"] != session["user_id"]:
         abort(403)
     return render_template("edit_dataset.html", item=item)
@@ -64,9 +68,11 @@ def edit_dataset(item_id):
 def update_dataset():
     item_id = request.form["item_id"]
     item = items.get_item(item_id)  
+    if not item:
+        abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)  
-        
+
     title = request.form["title"]
     description = request.form["description"]
     year = request.form["year"]
@@ -79,6 +85,8 @@ def update_dataset():
 @app.route("/delete_dataset/<int:item_id>", methods=["GET", "POST"])
 def delete_dataset(item_id):
     item = items.get_item(item_id)
+    if not item:
+        abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
    
