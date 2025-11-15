@@ -38,3 +38,13 @@ def update_item(item_id, title, description, year):
 def delete_dataset(item_id):
     sql = "DELETE FROM datasets WHERE id = ?"
     db.execute(sql, [item_id])
+
+
+#Search datasets from database
+def find_datasets(query):
+    sql = """SELECT id, title
+             FROM datasets
+             WHERE title LIKE ? OR description LIKE ?
+             ORDER BY id DESC"""
+    like = "%" + query + "%"
+    return db.query(sql, [like, like])

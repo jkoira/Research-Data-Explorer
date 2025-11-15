@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Find Dataset</title>
+</head>
+
+<body>
+  <h1>Find Dataset</h1>
+  <form action="/find_dataset" method="get">
+    <p>
+        Keywords: <input type="text" name ="query" value="{{ query }}">
+    </p>
+    <input type="submit" value="Search">
+  </form>
+  <p>
+    <a href="/">Back</a>
+  </p>
+  {% if query %}
+  <h2>Results</h2>
+  <ul>
+    {% for item in results %}
+    <li><a href="/item/{{ item.id }}">{{ item.title }}</a> </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+</body>
+
+</html>

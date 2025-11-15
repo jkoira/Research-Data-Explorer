@@ -15,6 +15,17 @@ def index():
     all_datasets = items.get_items()
     return render_template("index.html", items=all_datasets)
 
+#Show the page where you can search datasets
+@app.route("/find_dataset")
+def find_dataset():
+    query = request.args.get("query")
+    if query:
+        results = items.find_datasets(query)
+    else:
+        query = ""
+        results = []
+    return render_template("find_dataset.html", query=query, results=results)
+
 #Show dataset description page
 @app.route("/item/<int:item_id>")
 def show_item(item_id):
