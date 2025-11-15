@@ -11,14 +11,19 @@
   <p>
     You are logged in as {{ session.username }}, and your ID number is {{ session.user_id }}.
   </p>
-  {% endif %}
-  <p>
-    <a href="/login">Login</a>
-    <a href="/register">Create account</a>
+   <p>
     <a href="/logout">Logout</a>
   </p>
   <p>
     <a href="/new_dataset"> Add dataset</a>
+  </p>
+  {% else %}
+  <p>
+    <a href="/login">Login</a>
+    <a href="/register">Create account</a>
+  </p>
+  {% endif %}
+  <p>
     <a href="/find_dataset"> Find dataset</a>
   </p>
 

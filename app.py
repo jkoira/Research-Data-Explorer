@@ -9,6 +9,10 @@ import items
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
 #Home page
 @app.route("/")
 def index():
@@ -38,12 +42,14 @@ def show_item(item_id):
 #Add new dataset
 @app.route("/new_dataset")
 def new_dataset():
+    require_login()
     return render_template("new_dataset.html")
 
 
 #Add dataset to database
 @app.route("/create_dataset", methods=["POST"])
 def create_dataset():
+    require_login()
     title = request.form["title"]
     description = request.form["description"]
     year = request.form["year"]
@@ -56,6 +62,7 @@ def create_dataset():
 #Edit dataset
 @app.route("/edit_dataset/<int:item_id>")
 def edit_dataset(item_id):
+    require_login()
     item = items.get_item(item_id)
     if not item:
         abort(404)   
@@ -66,6 +73,7 @@ def edit_dataset(item_id):
 #Add edited dataset to database
 @app.route("/update_dataset", methods=["POST"])
 def update_dataset():
+    require_login()
     item_id = request.form["item_id"]
     item = items.get_item(item_id)  
     if not item:
@@ -84,6 +92,7 @@ def update_dataset():
 #delete dataset
 @app.route("/delete_dataset/<int:item_id>", methods=["GET", "POST"])
 def delete_dataset(item_id):
+    require_login()
     item = items.get_item(item_id)
     if not item:
         abort(404)
@@ -144,10 +153,12 @@ def login():
         else:
             return "ERROR: Incorrect username or password"
 
+#Log out from the app
 @app.route("/logout")
 def logout():
-    del session["username"]
-    del session["user_id"]
+    if "user_id" in session:
+        del session["username"]
+        del session["user_id"]
     return redirect("/")
 
 if __name__ == "__main__":
