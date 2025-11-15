@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import abort, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
@@ -55,12 +55,18 @@ def create_dataset():
 @app.route("/edit_dataset/<int:item_id>")
 def edit_dataset(item_id):
     item = items.get_item(item_id)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
     return render_template("edit_dataset.html", item=item)
 
 #Add edited dataset to database
 @app.route("/update_dataset", methods=["POST"])
 def update_dataset():
     item_id = request.form["item_id"]
+    item = items.get_item(item_id)  
+    if item["user_id"] != session["user_id"]:
+        abort(403)  
+        
     title = request.form["title"]
     description = request.form["description"]
     year = request.form["year"]
@@ -72,9 +78,13 @@ def update_dataset():
 #delete dataset
 @app.route("/delete_dataset/<int:item_id>", methods=["GET", "POST"])
 def delete_dataset(item_id):
+    item = items.get_item(item_id)
+    if item["user_id"] != session["user_id"]:
+        abort(403)
+   
     if request.method == "GET":
-        item = items.get_item(item_id)
         return render_template("delete_dataset.html", item=item)
+    
     if request.method == "POST":
         if "delete" in request.form:
             items.delete_dataset(item_id)
