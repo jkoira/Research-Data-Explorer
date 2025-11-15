@@ -58,6 +58,20 @@ def update_dataset():
     
     return redirect("/item/" + str(item_id))
 
+#delete dataset
+@app.route("/delete_dataset/<int:item_id>", methods=["GET", "POST"])
+def delete_dataset(item_id):
+    if request.method == "GET":
+        item = items.get_item(item_id)
+        return render_template("delete_dataset.html", item=item)
+    if request.method == "POST":
+        if "delete" in request.form:
+            items.delete_dataset(item_id)
+            return redirect("/")
+        else:
+            return redirect("/item/" + str(item_id))
+
+
 #Create account
 @app.route("/register")
 def register():
@@ -69,16 +83,16 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
+        return "ERROR: Passwords do not match"
     password_hash = generate_password_hash(password1)
 
     try:
         sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
         db.execute(sql, [username, password_hash])
     except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
+        return "ERROR: Username already taken"
 
-    return "Tunnus luotu"
+    return "Your account has been created"
 
 #Signing up
 @app.route("/login", methods=["GET", "POST"])
@@ -99,7 +113,7 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            return "VIRHE: väärä tunnus tai salasana"
+            return "ERROR: Incorrect username or password"
 
 @app.route("/logout")
 def logout():

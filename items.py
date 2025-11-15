@@ -32,3 +32,9 @@ def update_item(item_id, title, description, year):
                                  year = ?
                              WHERE id = ?"""
     db.execute(sql, [title, description, year, item_id])
+
+
+#Delete dataset information from database
+def delete_dataset(item_id):
+    sql = "DELETE FROM datasets WHERE id = ?"
+    db.execute(sql, [item_id])
