@@ -11,13 +11,9 @@ ReDaX is a web application that serves as a reference database for exploring and
 
 ## How to Run the Application
 1. clone the repository
-2. create and activate a virtual environment
-python3 -m venv venv
+2. create and activate a virtual environment: python3 -m venv venv
 source venv/bin/activate
-3. install flask library
-pip install flask
-4. create the database 
-sqlite3 database.db < schema.sql
-5. run the application
-flask run
+3. install flask library: pip install flask
+4. create the database: sqlite3 database.db < schema.sql
+5. run the application: flask run
 
