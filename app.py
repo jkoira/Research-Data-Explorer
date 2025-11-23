@@ -93,8 +93,18 @@ def update_dataset():
         abort(403)  
 
     title = request.form["title"]
+    if not title or len(title) > 80:
+        abort(403) 
     description = request.form["description"]
+    if not description or len(description) > 2000:
+        abort(403)
     year = request.form["year"]
+    if not re.search(r"^\d{4}$", year):
+        error = "Year must be a four-digit number."
+        return render_template("new_dataset.html", 
+                               error=error, 
+                               title=title, 
+                               description=description)
 
     items.update_item(item_id, title, description, year)
     
