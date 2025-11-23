@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
 import items
+import re
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -50,9 +51,19 @@ def new_dataset():
 @app.route("/create_dataset", methods=["POST"])
 def create_dataset():
     require_login()
-    title = request.form["title"]
+    title = request.form["title"].strip()
+    if not title or len(title) > 80:
+        abort(403) 
     description = request.form["description"]
-    year = request.form["year"]
+    if not description or len(description) > 2000:
+        abort(403)
+    year = request.form["year"].strip()
+    if not re.search(r"^\d{4}$", year):
+        error = "Year must be a four-digit number."
+        return render_template("new_dataset.html", 
+                               error=error, 
+                               title=title, 
+                               description=description)
     user_id = session["user_id"]
 
     items.add_item(title, description, year, user_id)
