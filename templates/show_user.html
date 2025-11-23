@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> User: {{ user.username }}</title>
+</head>
+
+<body>
+  <h1>User: {{ user.username }}</h1>
+  <p> 
+    {% if count == 1 %}
+    The user has added 1 dataset.
+    {% else %}
+    The user has added {{ count }} datasets.
+    {% endif %} 
+  </p>
+  <h2>Datasets:</h2>
+  <ul>
+    {% for item in items %}
+    <li><a href="/item/{{ item.id }}"> {{ item.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <p>
+    <a href="/">Back</a>
+  </p>
+  
+</body>
+
+</html>
