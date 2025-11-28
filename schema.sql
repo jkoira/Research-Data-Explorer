@@ -13,6 +13,13 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash TEXT NOT NULL
 );
 
+CREATE TABLE classes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    value TEXT
+
+);
+
 CREATE TABLE data_classes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     item_id INTEGER REFERENCES datasets(id) ON DELETE CASCADE,

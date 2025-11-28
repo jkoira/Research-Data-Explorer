@@ -20,34 +20,17 @@
         Collected (year): <br />
         <input type="text" name="year" pattern="^\d{4}$" required />
     </p>
+    {% for class in classes %}
     <p>
-      Scientific field: <br />
-      <select name="scientific_field">
-        <option value="(Select)">Select</option>
-        <option value="1 Natural sciences">1 Natural sciences</option>
-        <option value="2 Engineering and technology">2 Engineering and technology</option>
-        <option value="3 Medical and health sciences">3 Medical and health sciences</option>
-        <option value="4 Agricultural and forestry sciences">4 Agricultural and forestry sciences</option>
-        <option value="5 Social sciences">5 Social sciences</option>
-        <option value="6 Humanities">6 Humanities</option>
-        <option value="9 Other sciences">9 Other sciences</option>
+      {{ class }}: <br />
+      <select name="classes">
+        <option value="">Select</option>
+      {% for option in classes[class] %}
+      <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endfor %}
       </select>
     </p>
-    <p>
-      Data type: <br />
-      <select name="data_type">
-        <option value="(Select)">Select</option>
-        <option value="Audio">Audio</option>
-        <option value="Geospatial">Geospatial</option>
-        <option value="Graph">Graph</option>
-        <option value="Image">Image</option>
-        <option value="Multimodal">Multimodal</option>
-        <option value="Numerical">Numerical</option>
-        <option value="Textual">Textual</option>
-        <option value="Time series">Time series</option>
-        <option value="Video">Video</option>
-      </select>
-    </p>
+    {% endfor %}
     <input type="submit" value="Add dataset" />
   </form>
 </body>

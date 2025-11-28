@@ -55,7 +55,8 @@ def show_item(item_id):
 @app.route("/new_dataset")
 def new_dataset():
     require_login()
-    return render_template("new_dataset.html")
+    classes = items.get_all_classes()
+    return render_template("new_dataset.html", classes = classes)
 
 
 #Add dataset to database
@@ -76,13 +77,13 @@ def create_dataset():
                                title=title, 
                                description=description)
     user_id = session["user_id"]
+
     classes = []
-    scientific_field = request.form["scientific_field"]
-    if scientific_field:
-        classes.append(("Scientific field", scientific_field))
-    data_type = request.form["data_type"]
-    if data_type:
-        classes.append(("Data type", data_type))
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
+    
     items.add_item(title, description, year, user_id, classes)
     
     return redirect("/")
