@@ -47,7 +47,8 @@ def show_item(item_id):
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    return render_template("show_item.html", item=item)
+    classes = items.get_classes(item_id)
+    return render_template("show_item.html", item=item, classes=classes)
     
 
 #Add new dataset
@@ -75,8 +76,14 @@ def create_dataset():
                                title=title, 
                                description=description)
     user_id = session["user_id"]
-
-    items.add_item(title, description, year, user_id)
+    classes = []
+    scientific_field = request.form["scientific_field"]
+    if scientific_field:
+        classes.append(("Scientific field", scientific_field))
+    data_type = request.form["data_type"]
+    if data_type:
+        classes.append(("Data type", data_type))
+    items.add_item(title, description, year, user_id, classes)
     
     return redirect("/")
 
@@ -187,6 +194,3 @@ def logout():
         del session["username"]
         del session["user_id"]
     return redirect("/")
-
-if __name__ == "__main__":
-    app.run(debug=True)

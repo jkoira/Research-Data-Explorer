@@ -1,10 +1,22 @@
 import db
 
 #Insert the dataset to database
-def add_item(title, description, year, user_id):
+def add_item(title, description, year, user_id, classes):
 
     sql = "INSERT INTO datasets (title, description, year, user_id) VALUES (?, ?, ?, ?)"
     db.execute(sql, [title, description, year, user_id])
+
+    item_id = db.last_insert_id()
+
+    sql = "INSERT INTO data_classes (item_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [item_id, title, value])
+
+#Search classes from database
+def get_classes(item_id):
+    sql = "SELECT title, value FROM data_classes WHERE item_id = ?"
+    return db.query(sql, [item_id])
+
 
 #Search information from the datasets table
 def get_items():
