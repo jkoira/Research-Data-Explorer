@@ -48,7 +48,8 @@ def show_item(item_id):
     if not item:
         abort(404)
     classes = items.get_classes(item_id)
-    return render_template("show_item.html", item=item, classes=classes)
+    feedback = items.get_feedback(item_id)
+    return render_template("show_item.html", item=item, classes=classes, feedback=feedback)
     
 
 #Add new dataset
@@ -93,6 +94,25 @@ def create_dataset():
     items.add_item(title, description, year, user_id, classes)
     
     return redirect("/")
+
+#Add feedback message
+@app.route("/create_feedback", methods=["POST"])
+def create_feedback():
+    require_login()
+ 
+    feedback = request.form["feedback"]
+    if not feedback or len(feedback) > 1000:
+        abort(403)
+
+    item_id = request.form["item_id"]
+    item = items.get_item(item_id)
+    if not item:
+        abort(404)
+    user_id = session["user_id"]
+    
+    items.add_feedback(item_id, user_id, feedback)
+    
+    return redirect("/item/" + str(item_id))
 
 #Edit dataset
 @app.route("/edit_dataset/<int:item_id>")

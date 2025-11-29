@@ -30,6 +30,20 @@
       {% endfor %}
     </ul>
   </p>
+  
+  <h2>Dataset feedback</h2>
+  <ul> 
+    {% for message in feedback %}
+    <li><a href="/user/{{ message.user_id }}">{{ message.username }}</a>: {{ message.message }}</li>
+    {% endfor %}
+  </ul>
+  <form action="/create_feedback" method="post">
+    Feedback: <br />
+    <textarea name="feedback" rows="8" cols="60" maxlength="1000"></textarea> <br />
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="submit" value="Give feedback"/>
+    
+  </form>
   <p>
     <a href="/">Back</a>
   </p>

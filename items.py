@@ -80,3 +80,18 @@ def find_datasets(query):
              ORDER BY id DESC"""
     like = "%" + query + "%"
     return db.query(sql, [like, like])
+
+#Add feedback message to the database
+def add_feedback(item_id, user_id, message):
+    sql = """INSERT INTO feedback (item_id, user_id, message)
+             VALUES (?, ?, ?)"""
+    db.execute(sql, [item_id, user_id, message])
+
+#Search feedback messages linked to the dataset
+def get_feedback(item_id):
+    sql = """SELECT feedback.message, users.id user_id, users.username
+             FROM feedback, users
+             WHERE feedback.item_id = ? AND feedback.user_id = users.id
+             ORDER BY feedback.id DESC"""
+    return db.query(sql, [item_id])
+     
