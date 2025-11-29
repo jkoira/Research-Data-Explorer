@@ -97,7 +97,15 @@ def edit_dataset(item_id):
         abort(404)   
     if item["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit_dataset.html", item=item)
+
+    all_classes = items.get_all_classes()
+    classes = {}
+    for my_class in all_classes:
+        classes[my_class] = ""
+    for entry in items.get_classes(item_id):
+        classes[entry["title"]] = entry["value"]
+
+    return render_template("edit_dataset.html", item=item, classes=classes, all_classes=all_classes)
 
 #Add edited dataset to database
 @app.route("/update_dataset", methods=["POST"])
@@ -123,8 +131,14 @@ def update_dataset():
                                error=error, 
                                title=title, 
                                description=description)
+    
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
 
-    items.update_item(item_id, title, description, year)
+    items.update_item(item_id, title, description, year, classes)
     
     return redirect("/item/" + str(item_id))
 

@@ -51,12 +51,19 @@ def get_item(item_id):
     return result[0] if result else None
 
 #Update dataset information in database
-def update_item(item_id, title, description, year):
+def update_item(item_id, title, description, year, classes):
     sql = """UPDATE datasets SET title = ?,
                                  description = ?,
                                  year = ?
                              WHERE id = ?"""
     db.execute(sql, [title, description, year, item_id])
+
+    sql = "DELETE FROM data_classes WHERE item_id = ?"
+    db.execute(sql, [item_id])
+
+    sql = "INSERT INTO data_classes (item_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [item_id, title, value])
 
 
 #Delete dataset information from database

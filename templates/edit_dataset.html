@@ -21,7 +21,21 @@
       <input type="text" name="year" pattern="^\d{4}$" required value="{{ item.year }}" />
     </p>
     <input type="hidden" name="item_id" value="{{ item.id }}" />
-   
+    {% for class in all_classes %}
+    <p>
+      {{ class }}: <br />
+      <select name="classes">
+        <option value="">Select</option>
+      {% for option in all_classes[class] %}
+        {% if classes[class] == option %}
+        <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+        {% else %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+        {% endif %}
+      {% endfor %}
+      </select>
+    </p>
+    {% endfor %}
     <input type="submit" value="Update dataset" />
   </form>
 </body>
