@@ -213,8 +213,12 @@ def create():
     except sqlite3.IntegrityError:
         return "ERROR: Username already taken"
     
-    return "Your account has been created"
+    return redirect("/registered")
 
+#Registration completed page
+@app.route("/registered")
+def registered():
+    return render_template("registered.html")
 
 #Signing up
 @app.route("/login", methods=["GET", "POST"])
