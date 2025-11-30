@@ -89,9 +89,33 @@ def add_feedback(item_id, user_id, message):
 
 #Search feedback messages linked to the dataset
 def get_feedback(item_id):
-    sql = """SELECT feedback.message, users.id user_id, users.username
-             FROM feedback, users
-             WHERE feedback.item_id = ? AND feedback.user_id = users.id
+    sql = """SELECT feedback.id,
+                    feedback.item_id,
+                    feedback.message,
+                    feedback.created_at,
+                    users.id AS user_id,
+                    users.username
+             FROM feedback
+             JOIN users ON feedback.user_id = users.id
+             WHERE feedback.item_id = ?
              ORDER BY feedback.id DESC"""
     return db.query(sql, [item_id])
+
+#Search certain feedback message by id
+def get_feedback_by_id(feedback_id):
+    sql = """SELECT feedback.id, 
+                    feedback.item_id, 
+                    feedback.user_id, 
+                    feedback.message, 
+                    feedback.created_at,
+                    users.username
+             FROM feedback 
+             JOIN users ON users.id = feedback.user_id
+             WHERE feedback.id = ?"""
+    result = db.query(sql, [feedback_id])
+    return result[0] if result else None
+
+def delete_feedback(feedback_id):
+    sql = "DELETE FROM feedback WHERE id = ?"
+    db.execute(sql, [feedback_id])
      

@@ -31,7 +31,7 @@ CREATE TABLE feedback (
     item_id INTEGER NOT NULL REFERENCES datasets(id) ON DELETE CASCADE,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE SET NULL,
     message TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    created_at TEXT NOT NULL DEFAULT (datetime("now", "localtime"))
 );
 
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Delete feedback</title>
+</head>
+
+<body>
+  <h1>Delete feedback</h1>
+  <p>Sure you want to delete?</p>
+  <form action="/delete_feedback/{{ feedback.id }}" method="post">
+    <input type="submit" name="delete" value="Delete permanently">
+    <input type="submit" name="cancel" value="Cancel">
+  </form>
+</body>
+
+</html>

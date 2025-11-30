@@ -114,6 +114,29 @@ def create_feedback():
     
     return redirect("/item/" + str(item_id))
 
+#Delete feedback message
+@app.route("/delete_feedback/<int:feedback_id>", methods=["GET", "POST"])
+def delete_feedback(feedback_id):
+    require_login()
+
+    feedback = items.get_feedback_by_id(feedback_id)
+    if not feedback:
+        abort(404)
+    if feedback["user_id"] != session["user_id"]:
+        abort(403)
+   
+    if request.method == "GET":
+        item = items.get_item(feedback["item_id"])
+        return render_template("delete_feedback.html", feedback=feedback, item=item)
+    
+    if request.method == "POST":
+        if "delete" in request.form:
+            items.delete_feedback(feedback_id)
+            return redirect(f"/item/{feedback['item_id']}")
+        else:
+            return redirect(f"/item/{feedback['item_id']}")
+
+
 #Edit dataset
 @app.route("/edit_dataset/<int:item_id>")
 def edit_dataset(item_id):

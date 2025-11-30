@@ -34,7 +34,14 @@
   <h2>Dataset feedback</h2>
   <ul> 
     {% for message in feedback %}
-    <li><a href="/user/{{ message.user_id }}">{{ message.username }}</a>: {{ message.message }}</li>
+    <li><a href="/user/{{ message.user_id }}">{{ message.username }}</a> {{ message.created_at }}: 
+      <br>
+      {{ message.message }}
+      
+      {% if session.user_id == message.user_id %}
+        <a href="/delete_feedback/{{ message.id }}">Delete</a>
+      {% endif %}
+     </li>
     {% endfor %}
   </ul>
   <form action="/create_feedback" method="post">
