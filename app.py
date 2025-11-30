@@ -33,13 +33,31 @@ def show_user(user_id):
 #Show the page where you can search datasets
 @app.route("/find_dataset")
 def find_dataset():
+    
     query = request.args.get("query")
-    if query:
-        results = items.find_datasets(query)
-    else:
-        query = ""
-        results = []
-    return render_template("find_dataset.html", query=query, results=results)
+    data_type = request.args.get("data_type")
+    scientific_field = request.args.get("scientific_field")
+
+    print("QUERY =", query)
+    print("DATA_TYPE =", data_type)
+    print("FIELD =", scientific_field)
+
+    results = items.find_datasets(
+        query=query if query else None,
+        data_type=data_type if data_type else None,
+        scientific_field=scientific_field if scientific_field else None
+        )
+    
+    all_classes = items.get_all_classes()
+
+    return render_template(
+        "find_dataset.html", 
+        query=query, 
+        data_type=data_type,
+        scientific_field=scientific_field,
+        classes=all_classes,
+        results=results
+        )
 
 #Show dataset description page
 @app.route("/item/<int:item_id>")

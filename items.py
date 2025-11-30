@@ -7,10 +7,10 @@ def get_all_classes():
 
     classes = {}
     for title, value in result:
-        classes[title] = []
-    for title, value in result:
-        classes[title].append(value)
-    return classes
+        classes.setdefault(title, []).append(value)
+
+    return classes      
+    
 
 #Insert the dataset to database
 def add_item(title, description, year, user_id, classes):
@@ -73,13 +73,43 @@ def delete_dataset(item_id):
 
 
 #Search datasets from database
-def find_datasets(query):
-    sql = """SELECT id, title
+def find_datasets(query, data_type, scientific_field):
+    params = []
+    conditions = []
+    sql = """SELECT DISTINCT datasets.id, 
+                             datasets.title,
+                             datasets.description,
+                             datasets.year,
+                             users.username,
+                             users.id AS user_id
              FROM datasets
-             WHERE title LIKE ? OR description LIKE ?
-             ORDER BY id DESC"""
-    like = "%" + query + "%"
-    return db.query(sql, [like, like])
+             JOIN users ON users.id = datasets.user_id
+             LEFT JOIN data_classes dc1 ON dc1.item_id = datasets.id AND dc1.title = "Data type"
+             LEFT JOIN data_classes dc2 ON dc2.item_id = datasets.id AND dc2.title = "Scientific field"
+             """
+    #search by words
+    if query:
+        like = "%" + query + "%"
+        conditions.append("(datasets.title LIKE ? OR datasets.description LIKE ?)")
+        params.extend([like, like])
+
+    #Search by data type
+    if data_type:
+        conditions.append("dc1.value = ?")
+        params.append(data_type)
+
+    #Search by scientific field
+    if scientific_field:
+        conditions.append("dc2.value = ?")
+        params.append(scientific_field)
+    
+    if conditions:
+        sql += " WHERE " + " AND ".join(conditions)
+    
+    sql += " ORDER BY datasets.id DESC"
+
+    return db.query(sql, params)
+
 
 #Add feedback message to the database
 def add_feedback(item_id, user_id, message):

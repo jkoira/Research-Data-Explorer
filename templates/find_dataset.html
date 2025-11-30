@@ -9,14 +9,42 @@
   <h1>Find Dataset</h1>
   <form action="/find_dataset" method="get">
     <p>
-        Keywords: <input type="text" name ="query" value="{{ query }}">
+        Keywords: <input type="text" name ="query" value="{{ query or '' }}">
+    </p>
+    <p>
+        Data type:
+        <select name="data_type">
+          <option value="">-- any --</option>
+          {% if classes ["Data type"] %}
+            {% for value in classes["Data type"] %}
+              <option value="{{ value }}"
+                {% if value == data_type %}selected{% endif %}>
+              {{ value }}
+            </option>
+            {% endfor %}
+          {% endif %}
+        </select>
+    </p>
+    <p>
+        Scientific field:
+        <select name="scientific_field">
+          <option value="">-- any --</option>
+          {% if classes ["Scientific field"] %}
+            {% for value in classes["Scientific field"] %}
+              <option value="{{ value }}"
+                {% if value == scientific_field %}selected{% endif %}>
+                {{ value }}
+              </option>
+            {% endfor %}
+          {% endif %}
+        </select>
     </p>
     <input type="submit" value="Search">
   </form>
   <p>
     <a href="/">Back</a>
   </p>
-  {% if query %}
+  {% if query or data_type or scientific_field %}
   <h2>Results</h2>
   <ul>
     {% for item in results %}
