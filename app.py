@@ -38,10 +38,6 @@ def find_dataset():
     data_type = request.args.get("data_type")
     scientific_field = request.args.get("scientific_field")
 
-    print("QUERY =", query)
-    print("DATA_TYPE =", data_type)
-    print("FIELD =", scientific_field)
-
     results = items.find_datasets(
         query=query if query else None,
         data_type=data_type if data_type else None,

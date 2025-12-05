@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Delete dataset</title>
-</head>
+{% block title %}Delete dataset{% endblock %}
 
-<body>
-  <h1>Delete dataset</h1>
-  <p>Dataset: {{ item.title }}</p>
-  <p>Sure you want to delete?</p>
-  <form action="/delete_dataset/{{ item.id }}" method="post">
-    <input type="submit" name="delete" value="Delete permanently">
-    <input type="submit" name="back" value="Go back">
-  </form>
-</body>
-
-</html>
+{% block content %}
+<h2>Delete dataset</h2>
+<p>Dataset: {{ item.title }}</p>
+<p>Sure you want to delete?</p>
+<form action="/delete_dataset/{{ item.id }}" method="post">
+  <input type="submit" name="delete" value="Delete permanently">
+  <input type="submit" name="cancel" value="Cancel">
+</form>
+{% endblock %}

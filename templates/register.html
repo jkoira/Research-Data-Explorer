@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Create account</title>
-</head>
+{% block title %}Create account{% endblock %}
 
-<body>
-  <form action="/create" method="post">
-    <p>
-      Username: <br />
-      <input type="text" name="username" />
-    </p>
-    <p>
-      Password: <br />
-      <input type="password" name="password1" />
-    </p>
-    <p>
-      confirm password: <br />
-      <input type="password" name="password2" />
-    </p>
-    <input type="submit" value="create account" />
-  </form>
-</body>
+{% block content %}
+<h2>Create account</h2>
 
-</html>
+<form action="/create" method="post">
+  <p>
+    Username: <br />
+    <input type="text" name="username" />
+  </p>
+  <p>
+    Password: <br />
+    <input type="password" name="password1" />
+  </p>
+  <p>
+    confirm password: <br />
+    <input type="password" name="password2" />
+  </p>
+  <input type="submit" value="create account" />
+</form>
+{% endblock %}

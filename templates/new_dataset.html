@@ -1,38 +1,33 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>New dataset</title>
-</head>
+{% block title %}New dataset{% endblock %}
 
-<body>
-  <h1>Add new dataset</h1>
-  <form action="/create_dataset" method="post">
-    <p>
-      Dataset title: <br />
-      <input type="text" name="title" maxlength="80" value="{{ title or ''}}" required />
-    </p>
-    <p>
-      Description: <br />
-      <textarea name="description" rows="8" cols="60" maxlength="2000" required>{{ description or '' }}</textarea>
-    </p>
-    <p>
-        Collected (year): <br />
-        <input type="text" name="year" pattern="^\d{4}$" required />
-    </p>
-    {% for class in classes %}
-    <p>
-      {{ class }}: <br />
-      <select name="classes">
-        <option value="">Select</option>
-      {% for option in classes[class] %}
-      <option value="{{ class }}:{{ option }}">{{ option }}</option>
-      {% endfor %}
-      </select>
-    </p>
+{% block content %}
+<h2>Add new dataset</h2>
+<form action="/create_dataset" method="post">
+  <p>
+    Dataset title: <br />
+    <input type="text" name="title" maxlength="80" value="{{ title or ''}}" required />
+  </p>
+  <p>
+    Description: <br />
+    <textarea name="description" rows="8" cols="60" maxlength="2000" required>{{ description or '' }}</textarea>
+  </p>
+  <p>
+      Collected (year): <br />
+      <input type="text" name="year" pattern="^\d{4}$" required />
+  </p>
+  {% for class in classes %}
+  <p>
+    {{ class }}: <br />
+    <select name="classes">
+      <option value="">Select</option>
+    {% for option in classes[class] %}
+    <option value="{{ class }}:{{ option }}">{{ option }}</option>
     {% endfor %}
-    <input type="submit" value="Add dataset" />
-  </form>
-</body>
-
-</html>
+    </select>
+  </p>
+  {% endfor %}
+  <input type="submit" value="Add dataset" />
+</form>
+{% endblock %}

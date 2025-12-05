@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
+  <h1>Research Data Explorer</h1>
+
+  {% if session.username %}
+  <p>
+    Logged in as {{ session.username }}.
+  </p>
+  {% endif %}
+
+  <p>
+    <a href="/"> Home</a> |
+    <a href="/find_dataset">Find dataset</a> |
+    {% if session.user_id %}
+    <a href="/new_dataset">Add dataset</a> |
+    <a href="/logout">Logout</a>
+  {% else %}
+    <a href="/login">Login</a> |
+    <a href="/register">Create account</a>
+  {% endif %}
+  </p>
+
+  {% block content %}{% endblock %}
+
+</body>
+
+</html>

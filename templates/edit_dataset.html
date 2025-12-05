@@ -1,43 +1,38 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Edit dataset</title>
-</head>
+{% block title %}Edit dataset{% endblock %}
 
-<body>
-  <h1>Edit dataset</h1>
-  <form action="/update_dataset" method="post">
-    <p>
-      Dataset title: <br />
-      <input type="text" name="title" maxlength="80" value="{{ item.title or '' }}" required/>
-    </p>
-    <p>
-      Description: <br />
-      <textarea name="description" rows="8" cols="60" maxlength="2000" required>{{ item.description or ''}}</textarea>
-    </p>
-    <p>
-      Collected (year): <br />
-      <input type="text" name="year" pattern="^\d{4}$" required value="{{ item.year }}" />
-    </p>
-    <input type="hidden" name="item_id" value="{{ item.id }}" />
-    {% for class in all_classes %}
-    <p>
-      {{ class }}: <br />
-      <select name="classes">
-        <option value="">Select</option>
-      {% for option in all_classes[class] %}
-        {% if classes[class] == option %}
-        <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
-        {% else %}
-        <option value="{{ class }}:{{ option }}">{{ option }}</option>
-        {% endif %}
-      {% endfor %}
-      </select>
-    </p>
+{% block content %}
+<h2>Edit dataset</h2>
+<form action="/update_dataset" method="post">
+  <p>
+    Dataset title: <br />
+    <input type="text" name="title" maxlength="80" value="{{ item.title or '' }}" required/>
+  </p>
+  <p>
+    Description: <br />
+    <textarea name="description" rows="8" cols="60" maxlength="2000" required>{{ item.description or ''}}</textarea>
+  </p>
+  <p>
+    Collected (year): <br />
+    <input type="text" name="year" pattern="^\d{4}$" required value="{{ item.year }}" />
+  </p>
+  <input type="hidden" name="item_id" value="{{ item.id }}" />
+  {% for class in all_classes %}
+  <p>
+    {{ class }}: <br />
+    <select name="classes">
+      <option value="">Select</option>
+    {% for option in all_classes[class] %}
+      {% if classes[class] == option %}
+      <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+      {% else %}
+      <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endif %}
     {% endfor %}
-    <input type="submit" value="Update dataset" />
-  </form>
-</body>
-
-</html>
+    </select>
+  </p>
+  {% endfor %}
+  <input type="submit" value="Update dataset" />
+</form>
+{% endblock %}

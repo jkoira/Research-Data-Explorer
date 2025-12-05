@@ -1,21 +1,10 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Registration completed</title>
-</head>
+{% block title %}Registration completed{% endblock %}
 
-<body>
-  <h1>Research Data Explorer</h1>
-  <p>
-    Your account has been created.
-  </p>
-   
-  <p>
-    <a href="/login">Login</a>
-    <a href="/">Home page</a>
-  </p>
-
-</body>
-
-</html>
+{% block content %}
+<h2>Success!</h2>
+<p>
+  Your account has been created.
+</p>
+{% endblock %}

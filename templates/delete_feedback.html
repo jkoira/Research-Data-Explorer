@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Delete feedback</title>
-</head>
+{% block title %}Delete feedback{% endblock %}
 
-<body>
-  <h1>Delete feedback</h1>
-  <p>Sure you want to delete?</p>
-  <form action="/delete_feedback/{{ feedback.id }}" method="post">
-    <input type="submit" name="delete" value="Delete permanently">
-    <input type="submit" name="cancel" value="Cancel">
-  </form>
-</body>
-
-</html>
+{% block content %}
+<h2>Delete feedback</h2>
+<p>Sure you want to delete?</p>
+<form action="/delete_feedback/{{ feedback.id }}" method="post">
+  <input type="submit" name="delete" value="Delete permanently">
+  <input type="submit" name="cancel" value="Cancel">
+</form>
+{% endblock %}
