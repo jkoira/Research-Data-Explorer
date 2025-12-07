@@ -23,6 +23,8 @@ def add_item(title, description, year, user_id, classes):
     sql = "INSERT INTO data_classes (item_id, title, value) VALUES (?, ?, ?)"
     for title, value in classes:
         db.execute(sql, [item_id, title, value])
+        
+    return item_id
 
 #Search classes from database
 def get_classes(item_id):

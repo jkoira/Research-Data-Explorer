@@ -116,9 +116,9 @@ def create_dataset():
     if missing:
         return render_template("new_dataset.html", title=title, description=description, year=year, classes=all_classes)
     
-    items.add_item(title, description, year, user_id, classes)
+    item_id = items.add_item(title, description, year, user_id, classes)
     
-    return redirect("/")
+    return redirect("/item/" + str(item_id))
 
 #Add feedback message
 @app.route("/create_feedback", methods=["POST"])
