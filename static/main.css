@@ -1,13 +1,58 @@
 body {
-  margin: auto;
-  max-width: 50em;
-  font-family: sans-serif;
-  background-color: lightblue;
+  background-color: #F3EDE3;
+}
+
+h2, h3 {
+  font-family: 'Noto Serif', serif;
+}
+
+a {
+  font-family: 'Noto Sans', sans-serif;
+  color: #6E3F23;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dataset-list {
+    background-color: #FDFCF8;
+    border: 1px solid #A9663C;
+    border-radius: 8px;
+    max-width: 50em;
+    margin: auto;
+  
 }
 
 .item {
-    border: 2px solid black;
-    margin: 1em;
-    padding: 0.2em 0.5em;
-  
+    padding: 16px 20px;
+    border-bottom: 1px solid #A9663C;
+}
+.item:last-child {
+    border-bottom: none;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 1fr 1 fr;
+    grid-template-rows: auto auto;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 10px 20px;
+}
+
+.header h1 {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+    font-family: "Noto Serif", serif;
+    margin: 0;
+    Color: #6E3F23;
+}
+
+.logo {
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
+    justify-self: start;
+    height: 100px;
+    width: auto;
+    margin-top: -60px;
+    margin-left: -40px;
 }
