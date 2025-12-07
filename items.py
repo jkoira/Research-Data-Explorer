@@ -32,9 +32,18 @@ def get_classes(item_id):
 
 #Search information from the datasets table
 def get_items():
-    sql = "SELECT id, title FROM datasets ORDER by id DESC"
+    sql = """SELECT datasets.id, 
+                    datasets.title, 
+                    datasets.year, 
+                    sf.value AS scientific_field, 
+                    dt.value AS data_type
+             FROM datasets, data_classes dt, data_classes sf 
+             WHERE dt.item_id = datasets.id
+                AND dt.title = 'Data type'
+                AND sf.item_id = datasets.id
+                AND sf.title = 'Scientific field'
+             ORDER BY datasets.id DESC"""
     return db.query(sql)
-
 
 #Search information for the dataset description page
 def get_item(item_id):

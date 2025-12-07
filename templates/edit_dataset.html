@@ -21,7 +21,7 @@
   {% for class in all_classes %}
   <p>
     {{ class }}: <br />
-    <select name="classes">
+    <select name="classes" required>
       <option value="">Select</option>
     {% for option in all_classes[class] %}
       {% if classes[class] == option %}

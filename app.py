@@ -87,15 +87,19 @@ def create_dataset():
     year = request.form["year"].strip()
     if not re.search(r"^\d{4}$", year):
         error = "Year must be a four-digit number."
+        all_classes = items.get_all_classes()
         return render_template("new_dataset.html", 
                                error=error, 
                                title=title, 
-                               description=description)
+                               description=description,
+                               classes=all_classes)
     user_id = session["user_id"]
 
     all_classes = items.get_all_classes()
 
     classes = []
+    seen_titles = set()
+    
     for entry in request.form.getlist("classes"):
         if entry:
             class_title, class_value = entry.split(":")
@@ -104,6 +108,13 @@ def create_dataset():
             if class_value not in all_classes[class_title]:
                 abort(403)
             classes.append((class_title, class_value))
+            seen_titles.add(class_title)
+
+    required_titles = {"Scientific field", "Data type"}
+    missing = required_titles - seen_titles
+
+    if missing:
+        return render_template("new_dataset.html", title=title, description=description, year=year, classes=all_classes)
     
     items.add_item(title, description, year, user_id, classes)
     
@@ -190,7 +201,7 @@ def update_dataset():
     year = request.form["year"]
     if not re.search(r"^\d{4}$", year):
         error = "Year must be a four-digit number."
-        return render_template("new_dataset.html", 
+        return render_template("edit_dataset.html", 
                                error=error, 
                                title=title, 
                                description=description)
@@ -198,6 +209,7 @@ def update_dataset():
     all_classes = items.get_all_classes()
 
     classes = []
+    seen_titles = set()
     for entry in request.form.getlist("classes"):
         if entry:
             class_title, class_value = entry.split(":")
@@ -206,6 +218,16 @@ def update_dataset():
             if class_value not in all_classes[class_title]:
                 abort(403)
             classes.append((class_title, class_value))
+            seen_titles.add(class_title)
+    required_titles = {"Scientific field", "Data type"}
+
+    missing = required_titles - seen_titles
+    if missing:
+        return render_template("edit_dataset.html", 
+                               title=title, 
+                               description=description, 
+                               year=year, 
+                               all_classes=all_classes)
 
     items.update_item(item_id, title, description, year, classes)
     
