@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import abort, redirect, render_template, request, session
+from flask import abort, flash, redirect, render_template, request, session
 import config
 import db
 import items
@@ -264,20 +264,28 @@ def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+
+    if not password1:
+        flash("ERROR: Password cannot be empty")
+        return redirect("/register")
+    
+    if re.search(r"\s", password1):
+        flash("ERROR: Password cannot contain spaces")
+        return redirect("/register")
+
     if password1 != password2:
-        return "ERROR: Passwords do not match"
+        flash("ERROR: Passwords do not match")
+        return redirect("/register")
     
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        return "ERROR: Username already taken"
+        flash("ERROR: Username already taken")
+        return redirect("/register")
     
-    return redirect("/registered")
+    flash("Success! Your account has been created.")
+    return redirect("/login")
 
-#Registration completed page
-@app.route("/registered")
-def registered():
-    return render_template("registered.html")
 
 #Signing up
 @app.route("/login", methods=["GET", "POST"])
@@ -295,7 +303,8 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            return "ERROR: Incorrect username or password"
+            flash("ERROR: Incorrect username or password")
+            return redirect("/login")
 
 #Log out from the app
 @app.route("/logout")

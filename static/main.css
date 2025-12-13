@@ -111,3 +111,15 @@ input[type="text"], select, textarea, input[type="password"] {
 .dataset-title {
     max-width: 40ch;
 }
+
+.info {
+    max-width: 60ch;
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    background-color: #F2F6F2;
+    border-left: 4px solid #4F7A4F;
+    color: #2F4A2F;
+}
