@@ -6,6 +6,7 @@
 <h2>Delete feedback</h2>
 <p>Sure you want to delete?</p>
 <form action="/delete_feedback/{{ feedback.id }}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" name="delete" value="Delete permanently" class="button">
   <input type="submit" name="cancel" value="Cancel" class="button">
 </form>

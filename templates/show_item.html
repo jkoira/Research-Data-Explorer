@@ -11,7 +11,7 @@
 </p>
 {% endif %}
 <p class="dataset-description">
-  {{ item.description }}
+  {{ item.description | show_lines }}
 </p>
 <p>
   Collected: {{ item.year }}
@@ -30,7 +30,7 @@
   {% for message in feedback %}
   <li><a href="/user/{{ message.user_id }}">{{ message.username }}</a> {{ message.created_at }}: 
     <br>
-    {{ message.message }} 
+    {{ message.message | show_lines }} 
     
     {% if session.user_id == message.user_id %}
       <a href="/delete_feedback/{{ message.id }}">Delete</a>
@@ -45,6 +45,7 @@
   Feedback: <br />
   <textarea name="feedback" rows="4" cols="50" maxlength="500"></textarea> <br />
   <input type="hidden" name="item_id" value="{{ item.id }}">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Give feedback" class="button"/>
   
 </form>

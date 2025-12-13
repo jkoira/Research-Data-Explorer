@@ -6,12 +6,20 @@ import db
 import items
 import users
 import re
+import markupsafe
+import secrets
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 #Home page
@@ -70,6 +78,7 @@ def show_item(item_id):
 @app.route("/new_dataset")
 def new_dataset():
     require_login()
+
     classes = items.get_all_classes()
     return render_template("new_dataset.html", classes = classes)
 
@@ -78,6 +87,8 @@ def new_dataset():
 @app.route("/create_dataset", methods=["POST"])
 def create_dataset():
     require_login()
+    check_csrf()
+
     title = request.form["title"].strip()
     if not title or len(title) > 100:
         abort(403) 
@@ -124,6 +135,7 @@ def create_dataset():
 @app.route("/create_feedback", methods=["POST"])
 def create_feedback():
     require_login()
+    check_csrf()
  
     feedback = request.form["feedback"]
     if not feedback or len(feedback) > 600:
@@ -155,6 +167,7 @@ def delete_feedback(feedback_id):
         return render_template("delete_feedback.html", feedback=feedback, item=item)
     
     if request.method == "POST":
+        check_csrf()
         if "delete" in request.form:
             items.delete_feedback(feedback_id)
             return redirect(f"/item/{feedback['item_id']}")
@@ -166,6 +179,7 @@ def delete_feedback(feedback_id):
 @app.route("/edit_dataset/<int:item_id>")
 def edit_dataset(item_id):
     require_login()
+
     item = items.get_item(item_id)
     if not item:
         abort(404)   
@@ -185,6 +199,8 @@ def edit_dataset(item_id):
 @app.route("/update_dataset", methods=["POST"])
 def update_dataset():
     require_login()
+    check_csrf()
+
     item_id = request.form["item_id"]
     item = items.get_item(item_id)  
     if not item:
@@ -237,6 +253,7 @@ def update_dataset():
 @app.route("/delete_dataset/<int:item_id>", methods=["GET", "POST"])
 def delete_dataset(item_id):
     require_login()
+    
     item = items.get_item(item_id)
     if not item:
         abort(404)
@@ -247,6 +264,7 @@ def delete_dataset(item_id):
         return render_template("delete_dataset.html", item=item)
     
     if request.method == "POST":
+        check_csrf()
         if "delete" in request.form:
             items.delete_dataset(item_id)
             return redirect("/")
@@ -301,6 +319,7 @@ def login():
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             flash("ERROR: Incorrect username or password")
@@ -313,3 +332,10 @@ def logout():
         del session["username"]
         del session["user_id"]
     return redirect("/")
+
+#Line breaks in user input
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
