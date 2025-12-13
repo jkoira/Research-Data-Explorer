@@ -6,22 +6,22 @@
 <h2>Edit dataset</h2>
 <form action="/update_dataset" method="post">
   <p>
-    Dataset title: <br />
-    <input type="text" name="title" maxlength="80" value="{{ item.title or '' }}" required/>
+    <label for="title">Dataset title:</label> <br />
+    <input type="text" name="title" id="title" maxlength="80" value="{{ item.title or '' }}" required/>
   </p>
   <p>
-    Description: <br />
-    <textarea name="description" rows="8" cols="60" maxlength="2000" required>{{ item.description or ''}}</textarea>
+    <label for="description">Description:</label> <br />
+    <textarea name="description" id="description" rows="8" cols="60" maxlength="2000" required>{{ item.description or ''}}</textarea>
   </p>
   <p>
-    Collected (year): <br />
-    <input type="text" name="year" pattern="^\d{4}$" required value="{{ item.year }}" />
+    <label for="year">Collected (year):</label> <br />
+    <input type="text" name="year" id="year" pattern="^\d{4}$" required value="{{ item.year }}" />
   </p>
   <input type="hidden" name="item_id" value="{{ item.id }}" />
   {% for class in all_classes %}
   <p>
-    {{ class }}: <br />
-    <select name="classes" required>
+    <label for="class{{ class }}">{{ class }}:</label> <br />
+    <select name="classes" id="class{{ class }}" required>
       <option value="">Select</option>
     {% for option in all_classes[class] %}
       {% if classes[class] == option %}

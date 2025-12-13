@@ -42,8 +42,8 @@
 {% endif %}
 
 <form action="/create_feedback" method="post">
-  Feedback: <br />
-  <textarea name="feedback" rows="4" cols="50" maxlength="500"></textarea> <br />
+  <label for="feedback">Feedback:</label> <br />
+  <textarea name="feedback" id="feedback" rows="4" cols="50" maxlength="500"></textarea> <br />
   <input type="hidden" name="item_id" value="{{ item.id }}">
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Give feedback" class="button"/>

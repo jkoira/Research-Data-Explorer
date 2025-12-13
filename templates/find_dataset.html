@@ -7,11 +7,11 @@
 <form action="/find_dataset" method="get" class="search-form">
   <div class="form-row">
     <label for="query">Keywords:</label>
-    <input type="text" name ="query" value="{{ query or '' }}">
+    <input type="text" name ="query" id="query" value="{{ query or '' }}">
   </div>
   <div class="form-row">
     <label for="data_type">Data type:</label>
-    <select name="data_type">
+    <select name="data_type" id="data_type">
     <option value="">Any</option>
     {% if classes["Data type"] %}
       {% for value in classes["Data type"] %}
@@ -25,7 +25,7 @@
   </div>
   <div class="form-row">
     <label for="scientific_field">Scientific field:</label>
-    <select name="scientific_field">
+    <select name="scientific_field" id="scientific_field">
     <option value="">Any</option>
     {% if classes["Scientific field"] %}
       {% for value in classes["Scientific field"] %}
