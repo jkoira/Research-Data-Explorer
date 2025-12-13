@@ -79,10 +79,10 @@ def new_dataset():
 def create_dataset():
     require_login()
     title = request.form["title"].strip()
-    if not title or len(title) > 80:
+    if not title or len(title) > 100:
         abort(403) 
     description = request.form["description"]
-    if not description or len(description) > 2000:
+    if not description or len(description) > 2100:
         abort(403)
     year = request.form["year"].strip()
     if not re.search(r"^\d{4}$", year):
@@ -126,7 +126,7 @@ def create_feedback():
     require_login()
  
     feedback = request.form["feedback"]
-    if not feedback or len(feedback) > 1000:
+    if not feedback or len(feedback) > 600:
         abort(403)
 
     item_id = request.form["item_id"]

@@ -3,14 +3,14 @@
 {% block title %}{{ item.title }}{% endblock %}
 
 {% block content %}
-<h2>{{ item.title }}</h2>
+<h2 class="dataset-title">{{ item.title }}</h2>
 {% if session.user_id == item.user_id %}
 <p>
   <a href="/edit_dataset/{{ item.id }}">Edit</a> |
   <a href="/delete_dataset/{{ item.id }}">Delete</a>
 </p>
 {% endif %}
-<p>
+<p class="dataset-description">
   {{ item.description }}
 </p>
 <p>
@@ -30,12 +30,12 @@
   {% for message in feedback %}
   <li><a href="/user/{{ message.user_id }}">{{ message.username }}</a> {{ message.created_at }}: 
     <br>
-    {{ message.message }}
+    {{ message.message }} 
     
     {% if session.user_id == message.user_id %}
       <a href="/delete_feedback/{{ message.id }}">Delete</a>
     {% endif %}
-    </li>
+    </li> 
   {% endfor %}
 </ul>
 </div>
@@ -43,7 +43,7 @@
 
 <form action="/create_feedback" method="post">
   Feedback: <br />
-  <textarea name="feedback" rows="4" cols="50" maxlength="1000"></textarea> <br />
+  <textarea name="feedback" rows="4" cols="50" maxlength="500"></textarea> <br />
   <input type="hidden" name="item_id" value="{{ item.id }}">
   <input type="submit" value="Give feedback" class="button"/>
   

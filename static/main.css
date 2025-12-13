@@ -96,3 +96,18 @@ input[type="text"], select, textarea, input[type="password"] {
     border-radius: 6px;
     padding: 6px, 16px;
 }
+
+.dataset-description {
+    max-width: 60ch;
+}
+
+.feedback-list {
+    max-width: 60ch;
+}
+.feedback-list li {
+    margin-bottom: 20px;
+}
+
+.dataset-title {
+    max-width: 40ch;
+}
