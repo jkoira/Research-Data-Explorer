@@ -282,6 +282,14 @@ def register():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
+    if not username.strip():
+        flash("Username cannot be empty")
+        return render_template("register.html")
+    
+    if len(username) > 16:
+        flash("Username must be at most 16 characters long")
+        return render_template("register.html")
+
     if not password1:
         flash("ERROR: Password cannot be empty")
         filled = {"username": username}
