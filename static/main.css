@@ -17,42 +17,82 @@ a {
     background-color: #FDFCF8;
     border: 1px solid #A9663C;
     border-radius: 8px;
-    max-width: 50em;
-    margin: auto;
-  
+    max-width: 30em;
+    margin: 20px;
 }
 
 .item {
     padding: 16px 20px;
     border-bottom: 1px solid #A9663C;
 }
+
 .item:last-child {
     border-bottom: none;
 }
 
 .header {
-    display: grid;
-    grid-template-columns: 1fr 1 fr;
-    grid-template-rows: auto auto;
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 10px 20px;
+    margin: 20px;
 }
 
-.header h1 {
-    grid-column: 1 / span 1;
-    grid-row: 1 / span 1;
+.title-block {
+    display: inline-block;
+}
+
+.title-block h1 {
     font-family: "Noto Serif", serif;
     margin: 0;
-    Color: #6E3F23;
+    color: #6E3F23;
 }
 
 .logo {
-    grid-column: 2 / span 1;
-    grid-row: 2 / span 1;
-    justify-self: start;
+    display: block;
     height: 100px;
     width: auto;
-    margin-top: -60px;
-    margin-left: -40px;
+    margin-left: 300%;
+    margin-top: -50px;
+}
+
+input[type="text"], select, textarea, input[type="password"] {
+    width: 100%;
+    max-width: 28em;
+
+    padding: 10px 12 px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1rem;
+    background-color: #FDFCF8;
+    color: #6E3F23;
+    border: 1px solid #A9663C;
+    border-radius: 6px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-row input[type="text"] {
+    width: 20em;
+    box-sizing: border-box;
+}
+
+.form-row select {
+    width: 20em;
+    text-align: center;
+    text-align-last: center;
+    box-sizing: border-box;
+}
+
+.button {
+    width: auto;
+    justify-self: start;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 500;
+    background-color:#8A9B68;
+    color: #FDFCF8;
+    border: 1px solid #A9663C;
+    border-radius: 6px;
+    padding: 6px, 16px;
 }

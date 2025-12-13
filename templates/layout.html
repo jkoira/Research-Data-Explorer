@@ -11,12 +11,14 @@
 <body>
   <h1>Research Data Explorer</h1>
   <header class="header">
-    <img src="{{ url_for('static', filename='logo2.png') }}" alt="ReDaX logo" class="logo">
+    <div class="title-block">
+      <img src="{{ url_for('static', filename='logo2.png') }}" alt="ReDaX logo" class="logo">
+    </div>
   </header>
 
   {% if session.username %}
   <p>
-    Logged in as {{ session.username }}.
+    Logged in as <a href="/user/{{ session.user_id }}"> {{ session.username }}.</a>
   </p>
   {% endif %}
 

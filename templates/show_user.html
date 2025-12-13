@@ -12,9 +12,11 @@
   {% endif %} 
 </p>
 <h3>Datasets:</h3>
-<ul>
-  {% for item in items %}
-  <li><a href="/item/{{ item.id }}"> {{ item.title }}</a></li>
-  {% endfor %}
-</ul>
+<div class="dataset-list">
+{% for item in items %}
+<div class="item">
+  <a href="/item/{{ item.id }}"> {{ item.title }}</a> <br>
+</div>
+{% endfor %}
+</div>
 {% endblock %}

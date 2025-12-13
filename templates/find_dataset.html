@@ -3,17 +3,17 @@
 {% block title %}Find Dataset{% endblock %}
 
 {% block content %}
-
 <h2>Find Dataset</h2>
-<form action="/find_dataset" method="get">
-  <p>
-      Keywords: <input type="text" name ="query" value="{{ query or '' }}">
-  </p>
-<p>
-  Data type:
-  <select name="data_type">
-    <option value="">-- any --</option>
-    {% if classes ["Data type"] %}
+<form action="/find_dataset" method="get" class="search-form">
+  <div class="form-row">
+    <label for="query">Keywords:</label>
+    <input type="text" name ="query" value="{{ query or '' }}">
+  </div>
+  <div class="form-row">
+    <label for="data_type">Data type:</label>
+    <select name="data_type">
+    <option value="">Any</option>
+    {% if classes["Data type"] %}
       {% for value in classes["Data type"] %}
         <option value="{{ value }}"
           {% if value == data_type %}selected{% endif %}>
@@ -22,12 +22,12 @@
       {% endfor %}
     {% endif %}
   </select>
-</p>
-<p>
-  Scientific field:
-  <select name="scientific_field">
-    <option value="">-- any --</option>
-    {% if classes ["Scientific field"] %}
+  </div>
+  <div class="form-row">
+    <label for="scientific_field">Scientific field:</label>
+    <select name="scientific_field">
+    <option value="">Any</option>
+    {% if classes["Scientific field"] %}
       {% for value in classes["Scientific field"] %}
         <option value="{{ value }}"
           {% if value == scientific_field %}selected{% endif %}>
@@ -36,8 +36,11 @@
       {% endfor %}
     {% endif %}
   </select>
-</p>
-<input type="submit" value="Search">
+</div>
+<div class="form-row">
+  <span></span>
+  <input type="submit" value="Search" class="button">
+</div>
 </form>
 
 {% if query or data_type or scientific_field %}
@@ -47,6 +50,5 @@
   <li><a href="/item/{{ item.id }}">{{ item.title }}</a> </li>
   {% endfor %}
 </ul>
-{% endif %}
-
+{% endif %} 
 {% endblock %}
