@@ -273,27 +273,29 @@ def delete_dataset(item_id):
 
 
 #Create account
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "GET":
+        return render_template("register.html", filled={})
 
-@app.route("/create", methods=["POST"])
-def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
     if not password1:
         flash("ERROR: Password cannot be empty")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
     
     if re.search(r"\s", password1):
         flash("ERROR: Password cannot contain spaces")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     if password1 != password2:
         flash("ERROR: Passwords do not match")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
     
     try:
         users.create_user(username, password1)

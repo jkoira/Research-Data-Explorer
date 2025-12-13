@@ -5,10 +5,10 @@
 {% block content %}
 <h2>Create account</h2>
 
-<form action="/create" method="post">
+<form action="/register" method="post">
   <p>
     <label for="username">Username:</label> <br />
-    <input type="text" name="username" id="username" />
+    <input type="text" name="username" id="username" value="{{ filled.username }}" maxlength="16" />
   </p>
   <p>
     <label for="password1">Password:</label> <br />
