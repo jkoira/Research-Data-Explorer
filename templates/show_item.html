@@ -3,14 +3,14 @@
 {% block title %}{{ item.title }}{% endblock %}
 
 {% block content %}
-<h2 class="dataset-title">{{ item.title }}</h2>
+<h2>{{ item.title }}</h2>
 {% if session.user_id == item.user_id %}
 <p>
   <a href="/edit_dataset/{{ item.id }}">Edit</a> |
   <a href="/delete_dataset/{{ item.id }}">Delete</a>
 </p>
 {% endif %}
-<p class="dataset-description">
+<p>
   {{ item.description | show_lines }}
 </p>
 <p>

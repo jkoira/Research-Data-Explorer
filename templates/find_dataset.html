@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>Find Dataset</h2>
-<form action="/find_dataset" method="get" class="search-form">
+<form action="/find_dataset" method="get">
   <div class="form-row">
     <label for="query">Keywords:</label>
     <input type="text" name ="query" id="query" value="{{ query or '' }}">

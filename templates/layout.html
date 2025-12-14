@@ -9,12 +9,12 @@
 </head>
 
 <body>
-  <h1>Research Data Explorer</h1>
   <header class="header">
-    <div class="title-block">
+  <div class="title-block">
+    <h1>Research Data Explorer</h1>
       <img src="{{ url_for('static', filename='logo2.png') }}" alt="ReDaX logo" class="logo">
-    </div>
-  </header>
+  </div>
+    </header>
 
   {% if session.username %}
   <p>
@@ -42,7 +42,7 @@
 
 
   {% block content %}{% endblock %}
-
+  
 </body>
 
 </html>

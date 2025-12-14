@@ -1,24 +1,60 @@
 body {
   background-color: #F3EDE3;
+  margin: 20px auto;
+  max-width: 50em;
+  font-family: 'Noto Serif', sans-serif;
+  color: #6E3F23;
 }
 
-h2, h3 {
-  font-family: 'Noto Serif', serif;
+.header {
+    padding: 30px 0;
+}
+
+.title-block {
+    display: inline-block;
+    position: relative;
+}
+
+.title-block h1 {
+    font-family: "Noto Serif", serif;
+    margin: 0;
+    color: #4A2E1C;
+}
+
+.logo {
+    position: absolute;
+    left: 100%;
+    top: calc(100% - 1.5rem);
+    height: 100px;
+    width: auto;
+    margin-left: 0.3ch;
+    
 }
 
 a {
-  font-family: 'Noto Sans', sans-serif;
   color: #6E3F23;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+h2, h3 {
+  color: #4A2E1C;
+  font-family: "Noto Serif", serif;
+  margin-top: 30px;
 }
 
 .dataset-list {
     background-color: #FDFCF8;
     border: 1px solid #A9663C;
     border-radius: 8px;
-    max-width: 30em;
-    margin: 20px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
 
 .item {
@@ -30,59 +66,25 @@ a {
     border-bottom: none;
 }
 
-.header {
-    margin: 20px;
-}
-
-.title-block {
-    display: inline-block;
-}
-
-.title-block h1 {
-    font-family: "Noto Serif", serif;
-    margin: 0;
-    color: #6E3F23;
-}
-
-.logo {
-    display: block;
-    height: 100px;
-    width: auto;
-    margin-left: 300%;
-    margin-top: -50px;
-}
-
 input[type="text"], select, textarea, input[type="password"] {
     width: 100%;
     max-width: 28em;
-
-    padding: 10px 12 px;
+    padding: 10px 12px;
     font-family: 'Noto Sans', sans-serif;
     font-size: 1rem;
     background-color: #FDFCF8;
     color: #6E3F23;
     border: 1px solid #A9663C;
     border-radius: 6px;
+    box-sizing: border-box;
 }
 
 .form-row {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 160px 20em;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
-}
-
-.form-row input[type="text"] {
-    width: 20em;
-    box-sizing: border-box;
-}
-
-.form-row select {
-    width: 20em;
-    text-align: center;
-    text-align-last: center;
-    box-sizing: border-box;
 }
 
 .button {
@@ -94,23 +96,9 @@ input[type="text"], select, textarea, input[type="password"] {
     color: #FDFCF8;
     border: 1px solid #A9663C;
     border-radius: 6px;
-    padding: 6px, 16px;
+    padding: 6px 16px;
 }
 
-.dataset-description {
-    max-width: 60ch;
-}
-
-.feedback-list {
-    max-width: 60ch;
-}
-.feedback-list li {
-    margin-bottom: 20px;
-}
-
-.dataset-title {
-    max-width: 40ch;
-}
 
 .info {
     max-width: 60ch;
@@ -122,4 +110,8 @@ input[type="text"], select, textarea, input[type="password"] {
     background-color: #F2F6F2;
     border-left: 4px solid #4F7A4F;
     color: #2F4A2F;
+}
+
+.feedback-list li {
+    margin-bottom: 20px;
 }
