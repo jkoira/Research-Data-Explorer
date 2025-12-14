@@ -9,8 +9,8 @@ def get_all_classes():
     for title, value in result:
         classes.setdefault(title, []).append(value)
 
-    return classes      
-    
+    return classes
+
 
 #Insert the dataset to database
 def add_item(title, description, year, user_id, classes):
@@ -21,9 +21,9 @@ def add_item(title, description, year, user_id, classes):
     item_id = db.last_insert_id()
 
     sql = "INSERT INTO data_classes (item_id, title, value) VALUES (?, ?, ?)"
-    for title, value in classes:
-        db.execute(sql, [item_id, title, value])
-        
+    for class_title, class_value in classes:
+        db.execute(sql, [item_id, class_title, class_value])
+
     return item_id
 
 #Search classes from database
@@ -35,12 +35,12 @@ def get_classes(item_id):
 #Search information from the datasets table
 def get_items(page, per_page):
     offset = (page -1) * per_page
-    sql = """SELECT datasets.id, 
-                    datasets.title, 
-                    datasets.year, 
-                    sf.value AS scientific_field, 
+    sql = """SELECT datasets.id,
+                    datasets.title,
+                    datasets.year,
+                    sf.value AS scientific_field,
                     dt.value AS data_type
-             FROM datasets, data_classes dt, data_classes sf 
+             FROM datasets, data_classes dt, data_classes sf
              WHERE dt.item_id = datasets.id
                 AND dt.title = 'Data type'
                 AND sf.item_id = datasets.id
@@ -52,7 +52,7 @@ def get_items(page, per_page):
 #Search information for the dataset description page
 def get_item(item_id):
     sql = """SELECT datasets.id,
-                    datasets.title, 
+                    datasets.title,
                     datasets.description,
                     datasets.year,
                     users.username,
@@ -60,7 +60,7 @@ def get_item(item_id):
             FROM datasets, users
             WHERE datasets.user_id = users.id AND
                 datasets.id = ?"""
-    result = db.query(sql, [item_id]) 
+    result = db.query(sql, [item_id])
     return result[0] if result else None
 
 #Update dataset information in database
@@ -75,8 +75,8 @@ def update_item(item_id, title, description, year, classes):
     db.execute(sql, [item_id])
 
     sql = "INSERT INTO data_classes (item_id, title, value) VALUES (?, ?, ?)"
-    for title, value in classes:
-        db.execute(sql, [item_id, title, value])
+    for class_title, class_value in classes:
+        db.execute(sql, [item_id, class_title, class_value])
 
 
 #Get the count of the all datasets in database
@@ -97,7 +97,7 @@ def find_datasets(query, data_type, scientific_field, page, per_page):
     conditions = []
     offset = (page -1) * per_page
 
-    sql = """SELECT DISTINCT datasets.id, 
+    sql = """SELECT DISTINCT datasets.id,
                              datasets.title,
                              datasets.description,
                              datasets.year,
@@ -123,10 +123,10 @@ def find_datasets(query, data_type, scientific_field, page, per_page):
     if scientific_field:
         conditions.append("dc2.value = ?")
         params.append(scientific_field)
-    
+
     if conditions:
         sql += " WHERE " + " AND ".join(conditions)
-    
+
     sql += " ORDER BY datasets.id DESC LIMIT ? OFFSET ?"
     params.extend([per_page, offset])
 
@@ -187,13 +187,13 @@ def get_feedback(item_id):
 
 #Search certain feedback message by id
 def get_feedback_by_id(feedback_id):
-    sql = """SELECT feedback.id, 
-                    feedback.item_id, 
-                    feedback.user_id, 
-                    feedback.message, 
+    sql = """SELECT feedback.id,
+                    feedback.item_id,
+                    feedback.user_id,
+                    feedback.message,
                     feedback.created_at,
                     users.username
-             FROM feedback 
+             FROM feedback
              JOIN users ON users.id = feedback.user_id
              WHERE feedback.id = ?"""
     result = db.query(sql, [feedback_id])
@@ -202,4 +202,3 @@ def get_feedback_by_id(feedback_id):
 def delete_feedback(feedback_id):
     sql = "DELETE FROM feedback WHERE id = ?"
     db.execute(sql, [feedback_id])
-     

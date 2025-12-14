@@ -1,14 +1,16 @@
+import re
+import secrets
+import math
 import sqlite3
+import markupsafe
 from flask import Flask
 from flask import abort, flash, redirect, render_template, request, session
 import config
-import db
 import items
 import users
-import re
-import markupsafe
-import secrets
-import math
+
+
+
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -74,7 +76,6 @@ def show_user(user_id):
 #Show the page where you can search datasets
 @app.route("/find_dataset")
 def find_dataset():
-    
     query = request.args.get("query")
     data_type = request.args.get("data_type")
     scientific_field = request.args.get("scientific_field")
@@ -86,7 +87,7 @@ def find_dataset():
 
     if not (query or data_type or scientific_field):
         return render_template(
-            "find_dataset.html", 
+            "find_dataset.html",
             classes=all_classes,
             page=1,
             page_count=0,
@@ -94,8 +95,8 @@ def find_dataset():
         )
 
     item_count = items.find_datasets_count(
-        query or None, 
-        data_type or None, 
+        query or None,
+        data_type or None,
         scientific_field or None
     )
 
@@ -110,16 +111,16 @@ def find_dataset():
         )
 
     results = items.find_datasets(
-        query or None, 
-        data_type or None, 
-        scientific_field or None, 
-        page, 
+        query or None,
+        data_type or None,
+        scientific_field or None,
+        page,
         per_page
     )
-    
+
     return render_template(
-        "find_dataset.html", 
-        query=query, 
+        "find_dataset.html",
+        query=query,
         data_type=data_type,
         scientific_field=scientific_field,
         classes=all_classes,
@@ -138,7 +139,7 @@ def show_item(item_id):
     classes = items.get_classes(item_id)
     feedback = items.get_feedback(item_id)
     return render_template("show_item.html", item=item, classes=classes, feedback=feedback)
-    
+
 
 #Add new dataset
 @app.route("/new_dataset")
@@ -157,7 +158,7 @@ def create_dataset():
 
     title = request.form["title"].strip()
     if not title or len(title) > 100:
-        abort(403) 
+        abort(403)
     description = request.form["description"]
     if not description or len(description) > 2100:
         abort(403)
@@ -165,9 +166,9 @@ def create_dataset():
     if not re.search(r"^\d{4}$", year):
         error = "Year must be a four-digit number."
         all_classes = items.get_all_classes()
-        return render_template("new_dataset.html", 
-                               error=error, 
-                               title=title, 
+        return render_template("new_dataset.html",
+                               error=error,
+                               title=title,
                                description=description,
                                classes=all_classes)
     user_id = session["user_id"]
@@ -176,7 +177,7 @@ def create_dataset():
 
     classes = []
     seen_titles = set()
-    
+
     for entry in request.form.getlist("classes"):
         if entry:
             class_title, class_value = entry.split(":")
@@ -191,10 +192,15 @@ def create_dataset():
     missing = required_titles - seen_titles
 
     if missing:
-        return render_template("new_dataset.html", title=title, description=description, year=year, classes=all_classes)
-    
+        return render_template("new_dataset.html",
+                               title=title,
+                               description=description,
+                               year=year,
+                               classes=all_classes
+                               )
+
     item_id = items.add_item(title, description, year, user_id, classes)
-    
+
     return redirect("/item/" + str(item_id))
 
 #Add feedback message
@@ -202,7 +208,7 @@ def create_dataset():
 def create_feedback():
     require_login()
     check_csrf()
- 
+
     feedback = request.form["feedback"]
     if not feedback or len(feedback) > 600:
         abort(403)
@@ -212,9 +218,9 @@ def create_feedback():
     if not item:
         abort(404)
     user_id = session["user_id"]
-    
+
     items.add_feedback(item_id, user_id, feedback)
-    
+
     return redirect("/item/" + str(item_id))
 
 #Delete feedback message
@@ -227,18 +233,17 @@ def delete_feedback(feedback_id):
         abort(404)
     if feedback["user_id"] != session["user_id"]:
         abort(403)
-   
+
     if request.method == "GET":
         item = items.get_item(feedback["item_id"])
         return render_template("delete_feedback.html", feedback=feedback, item=item)
-    
+
     if request.method == "POST":
         check_csrf()
         if "delete" in request.form:
             items.delete_feedback(feedback_id)
-            return redirect(f"/item/{feedback['item_id']}")
-        else:
-            return redirect(f"/item/{feedback['item_id']}")
+        return redirect(f"/item/{feedback['item_id']}")
+
 
 
 #Edit dataset
@@ -248,7 +253,7 @@ def edit_dataset(item_id):
 
     item = items.get_item(item_id)
     if not item:
-        abort(404)   
+        abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
 
@@ -268,26 +273,26 @@ def update_dataset():
     check_csrf()
 
     item_id = request.form["item_id"]
-    item = items.get_item(item_id)  
+    item = items.get_item(item_id)
     if not item:
         abort(404)
     if item["user_id"] != session["user_id"]:
-        abort(403)  
+        abort(403)
 
     title = request.form["title"]
     if not title or len(title) > 80:
-        abort(403) 
+        abort(403)
     description = request.form["description"]
     if not description or len(description) > 2000:
         abort(403)
     year = request.form["year"]
     if not re.search(r"^\d{4}$", year):
         error = "Year must be a four-digit number."
-        return render_template("edit_dataset.html", 
-                               error=error, 
-                               title=title, 
+        return render_template("edit_dataset.html",
+                               error=error,
+                               title=title,
                                description=description)
-    
+
     all_classes = items.get_all_classes()
 
     classes = []
@@ -305,30 +310,30 @@ def update_dataset():
 
     missing = required_titles - seen_titles
     if missing:
-        return render_template("edit_dataset.html", 
-                               title=title, 
-                               description=description, 
-                               year=year, 
+        return render_template("edit_dataset.html",
+                               title=title,
+                               description=description,
+                               year=year,
                                all_classes=all_classes)
 
     items.update_item(item_id, title, description, year, classes)
-    
+
     return redirect("/item/" + str(item_id))
 
 #delete dataset
 @app.route("/delete_dataset/<int:item_id>", methods=["GET", "POST"])
 def delete_dataset(item_id):
     require_login()
-    
+
     item = items.get_item(item_id)
     if not item:
         abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
-   
+
     if request.method == "GET":
         return render_template("delete_dataset.html", item=item)
-    
+
     if request.method == "POST":
         check_csrf()
         if "delete" in request.form:
@@ -348,35 +353,34 @@ def register():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
+    error = None
+    filled = {"username": username}
+
     if not username.strip():
-        flash("Username cannot be empty")
-        return render_template("register.html")
-    
+        error = "Username cannot be empty"
+
     if len(username) > 16:
-        flash("Username must be at most 16 characters long")
-        return render_template("register.html")
+        error = "Username must be at most 16 characters long"
 
     if not password1:
-        flash("ERROR: Password cannot be empty")
-        filled = {"username": username}
-        return render_template("register.html", filled=filled)
-    
+        error = "ERROR: Password cannot be empty"
+
     if re.search(r"\s", password1):
-        flash("ERROR: Password cannot contain spaces")
-        filled = {"username": username}
-        return render_template("register.html", filled=filled)
+        error = "ERROR: Password cannot contain spaces"
 
     if password1 != password2:
-        flash("ERROR: Passwords do not match")
-        filled = {"username": username}
+        error = "ERROR: Passwords do not match"
+
+    if error:
+        flash(error)
         return render_template("register.html", filled=filled)
-    
+
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
         flash("ERROR: Username already taken")
         return redirect("/register")
-    
+
     flash("Success! Your account has been created.")
     return redirect("/login")
 
