@@ -95,8 +95,8 @@ def find_datasets(query, data_type, scientific_field):
                              users.id AS user_id
              FROM datasets
              JOIN users ON users.id = datasets.user_id
-             LEFT JOIN data_classes dc1 ON dc1.item_id = datasets.id AND dc1.title = "Data type"
-             LEFT JOIN data_classes dc2 ON dc2.item_id = datasets.id AND dc2.title = "Scientific field"
+             LEFT JOIN data_classes dc1 ON dc1.item_id = datasets.id AND dc1.title = 'Data type'
+             LEFT JOIN data_classes dc2 ON dc2.item_id = datasets.id AND dc2.title = 'Scientific field'
              """
     #search by words
     if query:
