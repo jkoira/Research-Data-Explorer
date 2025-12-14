@@ -92,9 +92,11 @@ def delete_dataset(item_id):
 
 
 #Search datasets from database
-def find_datasets(query, data_type, scientific_field):
+def find_datasets(query, data_type, scientific_field, page, per_page):
     params = []
     conditions = []
+    offset = (page -1) * per_page
+
     sql = """SELECT DISTINCT datasets.id, 
                              datasets.title,
                              datasets.description,
@@ -125,9 +127,42 @@ def find_datasets(query, data_type, scientific_field):
     if conditions:
         sql += " WHERE " + " AND ".join(conditions)
     
-    sql += " ORDER BY datasets.id DESC"
+    sql += " ORDER BY datasets.id DESC LIMIT ? OFFSET ?"
+    params.extend([per_page, offset])
 
     return db.query(sql, params)
+
+#Count of the datasets in search (Find dataset)
+def find_datasets_count(query, data_type, scientific_field):
+    params = []
+    conditions = []
+
+    sql = """SELECT COUNT(DISTINCT datasets.id)
+             FROM datasets
+             JOIN users ON users.id = datasets.user_id
+             LEFT JOIN data_classes dc1
+               ON dc1.item_id = datasets.id AND dc1.title = 'Data type'
+             LEFT JOIN data_classes dc2
+               ON dc2.item_id = datasets.id AND dc2.title = 'Scientific field'
+          """
+
+    if query:
+        like = "%" + query + "%"
+        conditions.append("(datasets.title LIKE ? OR datasets.description LIKE ?)")
+        params.extend([like, like])
+
+    if data_type:
+        conditions.append("dc1.value = ?")
+        params.append(data_type)
+
+    if scientific_field:
+        conditions.append("dc2.value = ?")
+        params.append(scientific_field)
+
+    if conditions:
+        sql += " WHERE " + " AND ".join(conditions)
+
+    return db.query(sql, params)[0][0]
 
 
 #Add feedback message to the database

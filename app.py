@@ -79,22 +79,55 @@ def find_dataset():
     data_type = request.args.get("data_type")
     scientific_field = request.args.get("scientific_field")
 
-    results = items.find_datasets(
-        query=query if query else None,
-        data_type=data_type if data_type else None,
-        scientific_field=scientific_field if scientific_field else None
-        )
-    
+    page = request.args.get("page", 1, type=int)
+    per_page = 10
+
     all_classes = items.get_all_classes()
 
+    if not (query or data_type or scientific_field):
+        return render_template(
+            "find_dataset.html", 
+            classes=all_classes,
+            page=1,
+            page_count=0,
+            count=0
+        )
+
+    item_count = items.find_datasets_count(
+        query or None, 
+        data_type or None, 
+        scientific_field or None
+    )
+
+    page_count = math.ceil(item_count / per_page)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/find_dataset?query={query}&data_type={data_type}&scientific_field={scientific_field}&page=1")
+    if page > page_count:
+        return redirect(
+            f"/find_dataset?query={query}&data_type={data_type}&scientific_field={scientific_field}&page={page_count}"
+        )
+
+    results = items.find_datasets(
+        query or None, 
+        data_type or None, 
+        scientific_field or None, 
+        page, 
+        per_page
+    )
+    
     return render_template(
         "find_dataset.html", 
         query=query, 
         data_type=data_type,
         scientific_field=scientific_field,
         classes=all_classes,
-        results=results
-        )
+        results=results,
+        page=page,
+        page_count=page_count,
+        count=item_count
+    )
 
 #Show dataset description page
 @app.route("/item/<int:item_id>")

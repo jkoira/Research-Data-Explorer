@@ -45,10 +45,36 @@
 
 {% if query or data_type or scientific_field %}
 <h3>Results</h3>
-<ul>
+{% if count == 0 %}
+  <p class="info">No results found.</p>
+{% else %}
+  <ul>
   {% for item in results %}
-  <li><a href="/item/{{ item.id }}">{{ item.title }}</a> </li>
+    <li><a href="/item/{{ item.id }}">{{ item.title }}</a> </li>
   {% endfor %}
-</ul>
-{% endif %} 
+  </ul>
+  
+ {% if page_count > 1 %}
+    <p>
+      {% if page > 1 %}
+        <a href="/find_dataset?query={{ query }}&data_type={{ data_type }}&scientific_field={{ scientific_field }}&page={{ page - 1 }}">
+          &lt;&lt;
+        </a>
+      {% endif %}
+
+      {{ page }}/{{ page_count }}
+
+      {% if page < page_count %}
+        <a href="/find_dataset?query={{ query }}&data_type={{ data_type }}&scientific_field={{ scientific_field }}&page={{ page + 1 }}">
+          &gt;&gt;
+        </a>
+      {% endif %}
+    </p>
+  {% endif %}
+{% endif %}
+{% endif %}
 {% endblock %}
+
+
+
+ 
