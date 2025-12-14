@@ -16,4 +16,10 @@
   {% endfor %}
 </div>
 
+<p>
+    <a href="/{{ page -1 }}">&lt;&lt;</a>
+  {{ page }}/{{ page_count }}
+    <a href="/{{ page + 1 }}">&gt;&gt;</a>
+</p>
+
 {% endblock %}

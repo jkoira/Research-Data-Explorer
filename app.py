@@ -8,6 +8,7 @@ import users
 import re
 import markupsafe
 import secrets
+import math
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -24,9 +25,20 @@ def check_csrf():
 
 #Home page
 @app.route("/")
-def index():
-    all_datasets = items.get_items()
-    return render_template("index.html", items=all_datasets)
+@app.route("/<int:page>")
+def index(page=1):
+    per_page = 10
+    item_count = items.get_item_count()
+    page_count = math.ceil(item_count / per_page)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+
+    all_datasets = items.get_items(page, per_page)
+    return render_template("index.html", items=all_datasets, page=page, page_count=page_count)
 
 #User page
 @app.route("/user/<int:user_id>")

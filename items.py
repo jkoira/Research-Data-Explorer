@@ -33,7 +33,8 @@ def get_classes(item_id):
 
 
 #Search information from the datasets table
-def get_items():
+def get_items(page, per_page):
+    offset = (page -1) * per_page
     sql = """SELECT datasets.id, 
                     datasets.title, 
                     datasets.year, 
@@ -44,8 +45,9 @@ def get_items():
                 AND dt.title = 'Data type'
                 AND sf.item_id = datasets.id
                 AND sf.title = 'Scientific field'
-             ORDER BY datasets.id DESC"""
-    return db.query(sql)
+             ORDER BY datasets.id DESC
+             LIMIT ? OFFSET ?"""
+    return db.query(sql, [per_page, offset])
 
 #Search information for the dataset description page
 def get_item(item_id):
@@ -75,6 +77,12 @@ def update_item(item_id, title, description, year, classes):
     sql = "INSERT INTO data_classes (item_id, title, value) VALUES (?, ?, ?)"
     for title, value in classes:
         db.execute(sql, [item_id, title, value])
+
+
+#Get the count of the all datasets in database
+def get_item_count():
+    sql = "SELECT COUNT(*) FROM datasets"
+    return db.query(sql)[0][0]
 
 
 #Delete dataset information from database
