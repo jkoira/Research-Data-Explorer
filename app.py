@@ -46,9 +46,30 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    items = users.get_items(user_id)
-    count = len(items)
-    return render_template("show_user.html", user=user, items=items, count=count)
+
+    page = request.args.get("page", 1, type=int)
+    per_page = 10
+
+    item_count = users.get_item_count(user_id)
+    page_count = math.ceil(item_count / per_page)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect(f"/user/{user_id}?page=1")
+    if page > page_count:
+        return redirect(f"/user/{user_id}?page={page_count}")
+
+    items_page = users.get_items(user_id, page, per_page)
+
+    return render_template(
+        "show_user.html",
+        user=user,
+        items=items_page,
+        page=page,
+        page_count=page_count,
+        count=item_count
+    )
+
 
 #Show the page where you can search datasets
 @app.route("/find_dataset")

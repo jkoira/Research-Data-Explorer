@@ -8,9 +8,11 @@ def get_user(user_id):
     return result[0] if result else None
 
 #Search items added by user
-def get_items(user_id):
-    sql = "SELECT id, title FROM datasets WHERE user_id = ? ORDER BY id DESC"
-    return db.query(sql, [user_id]) 
+def get_items(user_id, page, per_page):
+    offset = (page - 1) * per_page
+    sql = "SELECT id, title FROM datasets WHERE user_id = ? ORDER BY id DESC LIMIT ? OFFSET ?"
+    return db.query(sql, [user_id, per_page, offset])
+
 
 #Create user account
 def create_user(username, password):
@@ -31,4 +33,8 @@ def check_login(username,password):
         return user_id
     else:
         return None
-       
+
+#Get count of datasets added by certain user
+def get_item_count(user_id):
+    sql = "SELECT COUNT(*) FROM datasets WHERE user_id = ?"
+    return db.query(sql, [user_id])[0][0]
