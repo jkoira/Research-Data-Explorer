@@ -1,17 +1,17 @@
-# Research-Data-Explorer
-ReDaX is a web application that serves as a reference database for exploring and documenting research datasets. Users can add metadata, browse and search datasets, and leave comments to suggest use cases or evaluate the quality and usefulness of the data.
+# Research Data Explorer
+Research Data Explorer is a web application that serves as a reference database for exploring and documenting research datasets. Users can add metadata, browse and search datasets, and leave feedback to suggest use cases or evaluate the quality and usefulness of the data.
 
 * The user can create an account and log into the application.
 * The user can add metadata for datasets to the application. Additionally, the user can edit and delete the metadata they have added.
 * The user can view the metadata for the datasets added to the application. The user can see both the information they have added and the information added by other users.
-* The user can search for datasets using keywords or other criteria. The user can search for both the datasets they have added and those added by other users. **Partially implemented**
-* The application has user pages that display statistics for each user and the datasets added by the user. 
-* The user can select classifications for the metadata (data type, scientific field). Possible classifications are stored in the database. 
-* The user can add comments to the metadata of their own datasets as well as those added by other users. Users can delete their own comments. Comments can describe, for example, the use cases of the data or assessments of the data quality. 
+* The user can search for datasets using keywords or other criteria. The user can search for both the datasets they have added and those added by other users.
+* The application has user pages that display statistics for each user and the datasets added by the user.
+* The user can select classifications for the metadata (data type, scientific field). Possible classifications are stored in the database.
+* The user can add feedback comments to the metadata of their own datasets as well as those added by other users. Users can delete their own comments. Comments can describe, for example, the use cases of the data or assessments of the data quality.
 
 ## How to Run the Application
 1. clone the repository
-2. create and activate a virtual environment: python3 -m venv venv  
+2. create and activate a virtual environment: python3 -m venv venv
 source venv/bin/activate
 3. install flask library: pip install flask
 4. create the database: sqlite3 database.db < schema.sql
