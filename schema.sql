@@ -34,6 +34,17 @@ CREATE TABLE feedback (
     created_at TEXT NOT NULL DEFAULT (datetime("now"))
 );
 
+CREATE INDEX idx_data_classes_item_id ON data_classes(item_id);
+
+CREATE INDEX idx_data_classes_item_title ON data_classes(item_id, title);
+
+CREATE INDEX idx_data_classes_title_value_item ON data_classes(title, value, item_id);
+
+CREATE INDEX idx_datasets_user_id ON datasets(user_id);
+
+CREATE INDEX idx_feedback_item_id ON feedback(item_id);
+
+
 
 
   
